@@ -97,9 +97,12 @@ func MakeErr(err error, args ...interface{}) error {
     return new_err
 }
 
-func Assert(condition bool, fmt_str string, args ...interface{}) {
-    if condition {
-        var trace = getCallerLine()
-        panic(fmt.Sprintf("%s ASSERT: %s", trace, fmt.Sprintf(fmt_str, args...)))
+func Assert(condition bool, args ...interface{}) {
+    if !condition {
+        extra_fmt, ok := args[0].(string)
+        if !ok {
+            panic("Assert argument 2 not fmt string")
+        }
+        panic(fmt.Sprintf(extra_fmt, args[1:]...))
     }
 }
