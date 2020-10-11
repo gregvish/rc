@@ -99,6 +99,10 @@ func MakeErr(err error, args ...interface{}) error {
 
 func Assert(condition bool, args ...interface{}) {
     if !condition {
+        if len(args) == 0 {
+            panic("Assert")
+        }
+
         extra_fmt, ok := args[0].(string)
         if !ok {
             panic("Assert argument 2 not fmt string")
